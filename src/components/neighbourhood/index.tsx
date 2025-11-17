@@ -1,57 +1,55 @@
 import { useEffect, useState } from "react";
 
-function setHousesInfoCB(day: number) {
+function returnHasAndAmounts(
+    correctDay: number,
+    mumsChoice: number,
+): [boolean, number] {
+    const rand1 = Math.random();
+    const rand2 = Math.random();
+    const operator = Math.random();
+    const hasItem = operator < Math.random() ? rand1 < rand2 : rand1 > rand2;
+    const dayAmount = Math.floor(Math.random() * correctDay);
+    const randAmount = Math.floor(Math.random() * dayAmount);
+    const amount = hasItem
+        ? randAmount === 0
+            ? 1
+            : randAmount > mumsChoice
+            ? mumsChoice
+            : randAmount
+        : 0;
+
+    return [hasItem, amount];
+}
+
+function setHousesInfoCB(day: number, mumsChoice: number) {
     const correctDay = day <= 14 ? day : 28 - day;
 
     return Array.from({ length: correctDay })
         .reduce<
             Map<number, {
-                hasSugar: boolean;
-                hasFructose: boolean;
-                sugarAmount: number;
-                fructoseAmount: number;
+                hasS: boolean;
+                hasF: boolean;
+                hasFood: boolean;
+                sAmount: number;
+                fAmount: number;
+                foodAmount: number;
                 visited: boolean;
             }>
         >((acc, _curr, index) => {
-            const sugarRand1 = Math.random();
-            const sugarRand2 = Math.random();
-            const sugarOperator = Math.random();
-            const hasSugar = sugarOperator < Math.random()
-                ? sugarRand1 < sugarRand2
-                : sugarRand1 > sugarRand2;
-            const sugarNumber = Math.floor(Math.random() * correctDay);
-            const randSugarAmount = Math.floor(Math.random() * sugarNumber);
-            const sugarAmount = hasSugar
-                ? randSugarAmount === 0
-                    ? 1
-                    : randSugarAmount > 4
-                    ? 4
-                    : randSugarAmount
-                : 0;
-
-            const fructoseRand1 = Math.random();
-            const fructoseRand2 = Math.random();
-            const fructoseOperator = Math.random();
-            const hasFructose = fructoseOperator < Math.random()
-                ? fructoseRand1 < fructoseRand2
-                : fructoseRand1 > fructoseRand2;
-            const fructoseNumber = Math.floor(Math.random() * correctDay);
-            const randFructoseAmount = Math.floor(
-                Math.random() * fructoseNumber,
+            const [hasS, sAmount] = returnHasAndAmounts(correctDay, mumsChoice);
+            const [hasF, fAmount] = returnHasAndAmounts(correctDay, mumsChoice);
+            const [hasFood, foodAmount] = returnHasAndAmounts(
+                correctDay,
+                mumsChoice,
             );
-            const fructoseAmount = hasFructose
-                ? randFructoseAmount === 0
-                    ? 1
-                    : randFructoseAmount > 4
-                    ? 4
-                    : randFructoseAmount
-                : 0;
 
             acc.set(index, {
-                hasSugar,
-                hasFructose,
-                sugarAmount,
-                fructoseAmount,
+                hasS,
+                sAmount,
+                hasF,
+                fAmount,
+                hasFood,
+                foodAmount,
                 visited: false,
             });
 
@@ -60,14 +58,20 @@ function setHousesInfoCB(day: number) {
 }
 
 function Neighbourhood() {
+    const MUMS_CHOICE = 4;
     const [day, setDay] = useState(1);
-    const [housesInfo, setHousesInfo] = useState(() => setHousesInfoCB(day));
+    const [housesInfo, setHousesInfo] = useState(() =>
+        setHousesInfoCB(day, MUMS_CHOICE)
+    );
 
     useEffect(() => {
-        setHousesInfo(setHousesInfoCB(day));
+        setHousesInfo(setHousesInfoCB(day, MUMS_CHOICE));
     }, [day]);
 
-    console.log("housesInfo:", housesInfo);
+    console.log(
+        "housesInfo:",
+        JSON.stringify(Array.from(housesInfo.values()), null, 2),
+    );
 
     function handleKnock(houseIndex: number) {
         setHousesInfo((prev) => {
@@ -85,13 +89,14 @@ function Neighbourhood() {
 
     const dayElement = (
         <div className="day-info">
-            {day === 14 ? <h1>Day 14: Full Moon</h1> : <h1>Day {day}</h1>}
+            {day === 14 ? <h2>ༀ Day 14: Full Moon ༂</h2> : <h2>Day {day}</h2>}
             <input
                 type="number"
                 value={day}
                 min={1}
-                onChange={(e) => {
-                    const newDay = parseInt(e.target.value, 10);
+                max={28}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    const newDay = parseInt(event.target.value, 10);
                     if (!isNaN(newDay) && newDay >= 1) {
                         setDay(newDay);
                     }
@@ -101,32 +106,35 @@ function Neighbourhood() {
     );
 
     const houses = Array.from(housesInfo.values()).map((info, index) => {
-        const { fructoseAmount, hasFructose, hasSugar, sugarAmount, visited } =
+        const { fAmount, hasF, hasS, sAmount, visited, foodAmount, hasFood } =
             info;
 
         return visited
             ? (
-                <div key={index} className="house">
-                    <h2>House {index + 1} (Visited)</h2>
+                <div key={index} className="house visited">
+                    <h3>House {index + 1}</h3>
                     <p>
-                        {hasSugar
-                            ? `Please have some sugar: ${sugarAmount}`
-                            : `Apologies, no sugar available`}
+                        {hasS
+                            ? `✨ Please have some s: ${sAmount}`
+                            : `🙏 Apologies, no s available`}
                     </p>
                     <p>
-                        {hasFructose
-                            ? `Please have some fructose: ${fructoseAmount}`
-                            : `Apologies, no fructose available`}
+                        {hasF
+                            ? `🌸 Please have some f: ${fAmount}`
+                            : `🙏 Apologies, no f available`}
+                    </p>
+                    <p>
+                        {hasFood
+                            ? `🍚 Please have some food: ${foodAmount}`
+                            : `🙏 Apologies, no food available`}
                     </p>
                 </div>
             )
             : (
-                <div key={index}>
-                    <h2>House {index + 1}</h2>
+                <div key={index} className="house">
+                    <h3>House {index + 1}</h3>
                     <button
-                        onClick={() => {
-                            handleKnock(index);
-                        }}
+                        onClick={() => handleKnock(index)}
                     >
                         Knock
                     </button>
