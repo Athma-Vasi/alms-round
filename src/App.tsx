@@ -1,4 +1,4 @@
-import Neighbourhood from "./components/neighborhood";
+import Neighbourhood from "./components/neighbourhood";
 
 function App() {
   return (
