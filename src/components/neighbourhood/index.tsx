@@ -85,7 +85,7 @@ function Neighbourhood() {
 
     const dayElement = (
         <div className="day-info">
-            <h1>Day {day}</h1>
+            {day === 14 ? <h1>Day 14: Full Moon</h1> : <h1>Day {day}</h1>}
             <input
                 type="number"
                 value={day}

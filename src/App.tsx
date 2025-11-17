@@ -3,7 +3,7 @@ import Neighbourhood from "./components/neighbourhood";
 function App() {
   return (
     <div className="app">
-      <Neighbourhood />;
+      <Neighbourhood />
     </div>
   );
 }
