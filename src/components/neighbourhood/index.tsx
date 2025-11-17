@@ -93,7 +93,7 @@ function Neighbourhood() {
             <input
                 type="number"
                 value={day}
-                min={1}
+                min={0}
                 max={28}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     const newDay = parseInt(event.target.value, 10);
