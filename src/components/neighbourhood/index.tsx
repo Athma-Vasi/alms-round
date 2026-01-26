@@ -3,19 +3,17 @@ import { useEffect, useState } from "react";
 function returnHasAndAmounts(
     correctDay: number,
 ): [boolean, number] {
-    const operator = Math.random();
-    const hasItem = operator > Math.random();
+    const rand1 = Math.random();
+    const rand2 = Math.random();
+    const rand3 = Math.random();
+    const hasItem = rand3 < Math.random() ? rand1 < rand2 : rand1 > rand2;
     const dayAmount = Math.floor(Math.random() * correctDay);
-    const amount = hasItem
-        ? dayAmount === 0
-            ? 1
-            : dayAmount
-        : 0;
+    const amount = hasItem ? dayAmount === 0 ? 1 : dayAmount : 0;
 
     return [hasItem, amount];
 }
 
-function setHousesInfoCB(day: number, ) {
+function setHousesInfoCB(day: number) {
     const correctDay = day <= 14 ? day : 28 - day;
 
     return Array.from({ length: correctDay })
@@ -30,11 +28,10 @@ function setHousesInfoCB(day: number, ) {
                 visited: boolean;
             }>
         >((acc, _curr, index) => {
-            const [hasS, sAmount] = returnHasAndAmounts(correctDay, );
-            const [hasF, fAmount] = returnHasAndAmounts(correctDay, );
+            const [hasS, sAmount] = returnHasAndAmounts(correctDay);
+            const [hasF, fAmount] = returnHasAndAmounts(correctDay);
             const [hasFood, foodAmount] = returnHasAndAmounts(
                 correctDay,
-                
             );
 
             acc.set(index, {
@@ -53,12 +50,10 @@ function setHousesInfoCB(day: number, ) {
 
 function Neighbourhood() {
     const [day, setDay] = useState(1);
-    const [housesInfo, setHousesInfo] = useState(() =>
-        setHousesInfoCB(day, )
-    );
+    const [housesInfo, setHousesInfo] = useState(() => setHousesInfoCB(day));
 
     useEffect(() => {
-        setHousesInfo(setHousesInfoCB(day, ));
+        setHousesInfo(setHousesInfoCB(day));
     }, [day]);
 
     console.log(
