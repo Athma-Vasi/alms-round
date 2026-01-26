@@ -2,26 +2,20 @@ import { useEffect, useState } from "react";
 
 function returnHasAndAmounts(
     correctDay: number,
-    mumsChoice: number,
 ): [boolean, number] {
-    const rand1 = Math.random();
-    const rand2 = Math.random();
     const operator = Math.random();
-    const hasItem = operator < Math.random() ? rand1 < rand2 : rand1 > rand2;
+    const hasItem = operator > Math.random();
     const dayAmount = Math.floor(Math.random() * correctDay);
-    const randAmount = Math.floor(Math.random() * dayAmount);
     const amount = hasItem
-        ? randAmount === 0
+        ? dayAmount === 0
             ? 1
-            : randAmount > mumsChoice
-            ? mumsChoice
-            : randAmount
+            : dayAmount
         : 0;
 
     return [hasItem, amount];
 }
 
-function setHousesInfoCB(day: number, mumsChoice: number) {
+function setHousesInfoCB(day: number, ) {
     const correctDay = day <= 14 ? day : 28 - day;
 
     return Array.from({ length: correctDay })
@@ -36,11 +30,11 @@ function setHousesInfoCB(day: number, mumsChoice: number) {
                 visited: boolean;
             }>
         >((acc, _curr, index) => {
-            const [hasS, sAmount] = returnHasAndAmounts(correctDay, mumsChoice);
-            const [hasF, fAmount] = returnHasAndAmounts(correctDay, mumsChoice);
+            const [hasS, sAmount] = returnHasAndAmounts(correctDay, );
+            const [hasF, fAmount] = returnHasAndAmounts(correctDay, );
             const [hasFood, foodAmount] = returnHasAndAmounts(
                 correctDay,
-                mumsChoice,
+                
             );
 
             acc.set(index, {
@@ -58,14 +52,13 @@ function setHousesInfoCB(day: number, mumsChoice: number) {
 }
 
 function Neighbourhood() {
-    const MUMS_CHOICE = 4;
     const [day, setDay] = useState(1);
     const [housesInfo, setHousesInfo] = useState(() =>
-        setHousesInfoCB(day, MUMS_CHOICE)
+        setHousesInfoCB(day, )
     );
 
     useEffect(() => {
-        setHousesInfo(setHousesInfoCB(day, MUMS_CHOICE));
+        setHousesInfo(setHousesInfoCB(day, ));
     }, [day]);
 
     console.log(
