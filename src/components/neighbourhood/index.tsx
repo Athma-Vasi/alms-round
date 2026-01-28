@@ -3,12 +3,20 @@ import { useEffect, useState } from "react";
 function returnHasAndAmounts(
     correctDay: number,
 ): [boolean, number] {
+    const auspicious_number = 7;
     const rand1 = Math.random();
     const rand2 = Math.random();
     const rand3 = Math.random();
-    const hasItem = rand3 < Math.random() ? rand1 < rand2 : rand1 > rand2;
+    const rand4 = Math.random();
+    const hasItem = rand3 < rand4 ? rand1 < rand2 : rand1 > rand2;
     const dayAmount = Math.floor(Math.random() * correctDay);
-    const amount = hasItem ? dayAmount === 0 ? 1 : dayAmount : 0;
+    const amount = hasItem
+        ? dayAmount === 0
+            ? 1
+            : dayAmount > auspicious_number
+            ? auspicious_number
+            : dayAmount
+        : 0;
 
     return [hasItem, amount];
 }
