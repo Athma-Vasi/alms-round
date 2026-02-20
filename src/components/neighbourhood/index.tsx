@@ -6,7 +6,6 @@ function returnHasAndAmounts(limit: number): [boolean, number] {
     const rand3 = Math.random();
     const rand4 = Math.random();
     const hasItem = rand1 < rand2 ? rand3 < rand4 : rand3 > rand4;
-    // const hasItem = Math.random() < 0.5;
     const dayAmount = Math.floor(Math.random() * 10);
     const amount = hasItem
         ? dayAmount === 0 ? 1 : dayAmount > limit ? limit : dayAmount
