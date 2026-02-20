@@ -65,8 +65,6 @@ button:focus-visible {
   padding: 32px;
   width: clamp(300px, 80vw, 1200px);
 
-  outline: 1px solid teal;
-
   .neighbourhood {
     display: flex;
     flex-direction: column;
