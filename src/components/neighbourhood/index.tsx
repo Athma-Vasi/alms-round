@@ -77,23 +77,6 @@ function Neighbourhood() {
         });
     }
 
-    const dayElement = (
-        <div className="day-info">
-            <input
-                type="number"
-                value={day}
-                min={0}
-                max={28}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    const newDay = parseInt(event.target.value, 10);
-                    if (!isNaN(newDay) && newDay >= 1) {
-                        setDay(newDay);
-                    }
-                }}
-            />
-        </div>
-    );
-
     const houses = Array.from(housesInfo.values()).map((info, index) => {
         const {
             hasCarbs,
@@ -140,7 +123,6 @@ function Neighbourhood() {
 
     return (
         <div className="neighbourhood">
-            {dayElement}
             <div className="houses">{houses}</div>
         </div>
     );
