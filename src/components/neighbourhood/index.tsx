@@ -22,26 +22,26 @@ function setHousesInfoCB(limit: number) {
     return Array.from({ length })
         .reduce<
             Map<number, {
-                hasCarbs: boolean;
-                carbAmount: number;
-                hasFats: boolean;
-                fatAmount: number;
-                hasProteins: boolean;
-                proteinAmount: number;
+                hasC: boolean;
+                cAmount: number;
+                hasF: boolean;
+                fAmount: number;
+                hasP: boolean;
+                pAmount: number;
                 visited: boolean;
             }>
         >((acc, _curr, index) => {
-            const [hasCarbs, carbAmount] = returnHasAndAmounts(limit);
-            const [hasProteins, proteinAmount] = returnHasAndAmounts(limit);
-            const [hasFats, fatAmount] = returnHasAndAmounts(limit);
+            const [hasC, cAmount] = returnHasAndAmounts(limit);
+            const [hasP, pAmount] = returnHasAndAmounts(limit);
+            const [hasF, fAmount] = returnHasAndAmounts(limit);
 
             acc.set(index, {
-                hasCarbs,
-                carbAmount,
-                hasFats,
-                fatAmount,
-                hasProteins,
-                proteinAmount,
+                hasC,
+                cAmount,
+                hasF,
+                fAmount,
+                hasP,
+                pAmount,
                 visited: false,
             });
 
@@ -51,17 +51,11 @@ function setHousesInfoCB(limit: number) {
 
 function Neighbourhood() {
     const LIMIT = 4;
-    const [day, setDay] = useState(1);
     const [housesInfo, setHousesInfo] = useState(() => setHousesInfoCB(LIMIT));
 
     useEffect(() => {
         setHousesInfo(setHousesInfoCB(LIMIT));
-    }, [day]);
-
-    console.log(
-        "housesInfo:",
-        JSON.stringify(Array.from(housesInfo.values()), null, 2),
-    );
+    }, []);
 
     function handleKnock(houseIndex: number) {
         setHousesInfo((prev) => {
@@ -79,12 +73,12 @@ function Neighbourhood() {
 
     const houses = Array.from(housesInfo.values()).map((info, index) => {
         const {
-            hasCarbs,
-            carbAmount,
-            hasFats,
-            fatAmount,
-            hasProteins,
-            proteinAmount,
+            hasC,
+            cAmount,
+            hasF,
+            fAmount,
+            hasP,
+            pAmount,
             visited,
         } = info;
 
@@ -93,19 +87,19 @@ function Neighbourhood() {
                 <div key={index} className="house visited">
                     <h3>House {index + 1}</h3>
                     <p>
-                        {hasCarbs
-                            ? `🍚 Please have some carbs: ${carbAmount}`
-                            : `🙏 Apologies, no carbs available`}
+                        {hasC
+                            ? `Please have some c: ${cAmount}`
+                            : `🙏 Apologies, no c available`}
                     </p>
                     <p>
-                        {hasProteins
-                            ? `🫘 Please have some protein: ${proteinAmount}`
-                            : `🙏 Apologies, no protein available`}
+                        {hasP
+                            ? `Please have some p: ${pAmount}`
+                            : `🙏 Apologies, no p available`}
                     </p>
                     <p>
-                        {hasFats
-                            ? `🥜 Please have some fat: ${fatAmount}`
-                            : `🙏 Apologies, no fat available`}
+                        {hasF
+                            ? `Please have some f: ${fAmount}`
+                            : `🙏 Apologies, no f available`}
                     </p>
                 </div>
             )
