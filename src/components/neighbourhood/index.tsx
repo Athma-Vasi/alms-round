@@ -89,17 +89,17 @@ function Neighbourhood() {
                     <p>
                         {hasC
                             ? `Please have some c: ${cAmount}`
-                            : `🙏 Apologies, no c available`}
+                            : `Apologies, no c available`}
                     </p>
                     <p>
                         {hasP
                             ? `Please have some p: ${pAmount}`
-                            : `🙏 Apologies, no p available`}
+                            : `Apologies, no p available`}
                     </p>
                     <p>
                         {hasF
                             ? `Please have some f: ${fAmount}`
-                            : `🙏 Apologies, no f available`}
+                            : `Apologies, no f available`}
                     </p>
                 </div>
             )
