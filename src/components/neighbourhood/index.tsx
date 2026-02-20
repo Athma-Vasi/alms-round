@@ -1,54 +1,47 @@
 import { useEffect, useState } from "react";
 
-function returnHasAndAmounts(
-    correctDay: number,
-): [boolean, number] {
-    const auspicious_number = 7;
+function returnHasAndAmounts(limit: number): [boolean, number] {
     const rand1 = Math.random();
     const rand2 = Math.random();
     const rand3 = Math.random();
     const rand4 = Math.random();
-    const hasItem = rand3 < rand4 ? rand1 < rand2 : rand1 > rand2;
-    const dayAmount = Math.floor(Math.random() * correctDay);
+    const hasItem = rand1 < rand2 ? rand3 < rand4 : rand3 > rand4;
+    // const hasItem = Math.random() < 0.5;
+    const dayAmount = Math.floor(Math.random() * 10);
     const amount = hasItem
-        ? dayAmount === 0
-            ? 1
-            : dayAmount > auspicious_number
-            ? auspicious_number
-            : dayAmount
+        ? dayAmount === 0 ? 1 : dayAmount > limit ? limit : dayAmount
         : 0;
 
     return [hasItem, amount];
 }
 
-function setHousesInfoCB(day: number) {
-    const correctDay = day <= 14 ? day : 28 - day;
+function setHousesInfoCB(limit: number) {
+    const rand = Math.floor(Math.random() * 10);
+    const length = rand < 4 ? 4 : rand;
 
-    return Array.from({ length: correctDay })
+    return Array.from({ length })
         .reduce<
             Map<number, {
-                hasS: boolean;
-                hasF: boolean;
-                hasFood: boolean;
-                sAmount: number;
-                fAmount: number;
-                foodAmount: number;
+                hasCarbs: boolean;
+                carbAmount: number;
+                hasFats: boolean;
+                fatAmount: number;
+                hasProteins: boolean;
+                proteinAmount: number;
                 visited: boolean;
             }>
         >((acc, _curr, index) => {
-            const [hasS, sAmount] = returnHasAndAmounts(correctDay);
-            const [hasF, fAmount] = returnHasAndAmounts(correctDay);
-            const [hasFood, foodAmount] = returnHasAndAmounts(
-                correctDay,
-            );
+            const [hasCarbs, carbAmount] = returnHasAndAmounts(limit);
+            const [hasProteins, proteinAmount] = returnHasAndAmounts(limit);
+            const [hasFats, fatAmount] = returnHasAndAmounts(limit);
 
             acc.set(index, {
-                hasS,
-                sAmount,
-                hasF,
-                fAmount,
-                hasFood,
-                foodAmount,
+                hasCarbs,
+                carbAmount,
+                hasFats,
+                fatAmount,
+                hasProteins,
+                proteinAmount,
                 visited: false,
             });
 
@@ -57,11 +50,12 @@ function setHousesInfoCB(day: number) {
 }
 
 function Neighbourhood() {
+    const LIMIT = 4;
     const [day, setDay] = useState(1);
-    const [housesInfo, setHousesInfo] = useState(() => setHousesInfoCB(day));
+    const [housesInfo, setHousesInfo] = useState(() => setHousesInfoCB(LIMIT));
 
     useEffect(() => {
-        setHousesInfo(setHousesInfoCB(day));
+        setHousesInfo(setHousesInfoCB(LIMIT));
     }, [day]);
 
     console.log(
@@ -85,7 +79,6 @@ function Neighbourhood() {
 
     const dayElement = (
         <div className="day-info">
-            {day === 14 ? <h2>ༀ Day 14: Full Moon ༂</h2> : <h2>Day {day}</h2>}
             <input
                 type="number"
                 value={day}
@@ -102,27 +95,34 @@ function Neighbourhood() {
     );
 
     const houses = Array.from(housesInfo.values()).map((info, index) => {
-        const { fAmount, hasF, hasS, sAmount, visited, foodAmount, hasFood } =
-            info;
+        const {
+            hasCarbs,
+            carbAmount,
+            hasFats,
+            fatAmount,
+            hasProteins,
+            proteinAmount,
+            visited,
+        } = info;
 
         return visited
             ? (
                 <div key={index} className="house visited">
                     <h3>House {index + 1}</h3>
                     <p>
-                        {hasS
-                            ? `✨ Please have some s: ${sAmount}`
-                            : `🙏 Apologies, no s available`}
+                        {hasCarbs
+                            ? `🍚 Please have some carbs: ${carbAmount}`
+                            : `🙏 Apologies, no carbs available`}
                     </p>
                     <p>
-                        {hasF
-                            ? `🌸 Please have some f: ${fAmount}`
-                            : `🙏 Apologies, no f available`}
+                        {hasProteins
+                            ? `🫘 Please have some protein: ${proteinAmount}`
+                            : `🙏 Apologies, no protein available`}
                     </p>
                     <p>
-                        {hasFood
-                            ? `🍚 Please have some food: ${foodAmount}`
-                            : `🙏 Apologies, no food available`}
+                        {hasFats
+                            ? `🥜 Please have some fat: ${fatAmount}`
+                            : `🙏 Apologies, no fat available`}
                     </p>
                 </div>
             )
