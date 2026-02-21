@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function returnHasAndAmounts(limit: number): [boolean, number] {
+function returnHasAndAmounts(limit: number): number {
     const rand1 = Math.random();
     const rand2 = Math.random();
     const rand3 = Math.random();
@@ -9,9 +9,9 @@ function returnHasAndAmounts(limit: number): [boolean, number] {
     const dayAmount = Math.floor(Math.random() * 10);
     const amount = hasItem
         ? dayAmount === 0 ? 1 : dayAmount > limit ? limit : dayAmount
-        : 0;
+        : 1;
 
-    return [hasItem, amount];
+    return amount;
 }
 
 function setHousesInfoCB(limit: number) {
@@ -21,25 +21,19 @@ function setHousesInfoCB(limit: number) {
     return Array.from({ length })
         .reduce<
             Map<number, {
-                hasC: boolean;
                 cAmount: number;
-                hasF: boolean;
                 fAmount: number;
-                hasP: boolean;
                 pAmount: number;
                 visited: boolean;
             }>
         >((acc, _curr, index) => {
-            const [hasC, cAmount] = returnHasAndAmounts(limit);
-            const [hasP, pAmount] = returnHasAndAmounts(limit);
-            const [hasF, fAmount] = returnHasAndAmounts(limit);
+            const cAmount = returnHasAndAmounts(limit);
+            const pAmount = returnHasAndAmounts(limit);
+            const fAmount = returnHasAndAmounts(limit);
 
             acc.set(index, {
-                hasC,
                 cAmount,
-                hasF,
                 fAmount,
-                hasP,
                 pAmount,
                 visited: false,
             });
@@ -72,11 +66,8 @@ function Neighbourhood() {
 
     const houses = Array.from(housesInfo.values()).map((info, index) => {
         const {
-            hasC,
             cAmount,
-            hasF,
             fAmount,
-            hasP,
             pAmount,
             visited,
         } = info;
@@ -86,19 +77,13 @@ function Neighbourhood() {
                 <div key={index} className="house visited">
                     <h3>House {index + 1}</h3>
                     <p>
-                        {hasC
-                            ? `Please have some c: ${cAmount}`
-                            : `Apologies, no c available`}
+                        {`Please have some c: ${cAmount}`}
                     </p>
                     <p>
-                        {hasP
-                            ? `Please have some p: ${pAmount}`
-                            : `Apologies, no p available`}
+                        {`Please have some p: ${pAmount}`}
                     </p>
                     <p>
-                        {hasF
-                            ? `Please have some f: ${fAmount}`
-                            : `Apologies, no f available`}
+                        {`Please have some f: ${fAmount}`}
                     </p>
                 </div>
             )
