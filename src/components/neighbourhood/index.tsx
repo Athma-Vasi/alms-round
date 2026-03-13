@@ -4,11 +4,11 @@ type State = {
     cAmount: number;
     fAmount: number;
     pAmount: number;
-    // sAmount: number;
+    sAmount: number;
     visited: boolean;
 };
 
-function returnHasAndAmounts(limit: number, ): number {
+function returnHasAndAmounts(limit: number, isS:boolean=false): number {
     const rand1 = Math.random();
     const rand2 = Math.random();
     const rand3 = Math.random();
@@ -16,9 +16,9 @@ function returnHasAndAmounts(limit: number, ): number {
     const hasItem = rand1 < rand2 ? rand3 < rand4 : rand3 > rand4;
     const dayAmount = Math.floor(Math.random() * 10);
 
-    // if (isS) {
-    //     return hasItem ? 1 : 0;
-    // }
+    if (isS) {
+        return hasItem ? 1 : 0;
+    }
 
     return hasItem
         ? dayAmount === 0 ? 1 : dayAmount > limit ? limit : dayAmount
@@ -34,13 +34,13 @@ function setHousesInfoCB(limit: number): Map<number, State> {
             const cAmount = returnHasAndAmounts(limit);
             const pAmount = returnHasAndAmounts(limit);
             const fAmount = returnHasAndAmounts(limit);
-            // const sAmount = returnHasAndAmounts(limit,);
+            const sAmount = returnHasAndAmounts(limit,true);
 
             acc.set(index, {
                 cAmount,
                 fAmount,
                 pAmount,
-                // sAmount,
+                sAmount,
                 visited: false,
             });
 
@@ -75,7 +75,7 @@ function Neighbourhood(): JSX.Element {
             cAmount,
             fAmount,
             pAmount,
-            // sAmount,
+            sAmount,
             visited,
         } = info;
 
@@ -92,6 +92,9 @@ function Neighbourhood(): JSX.Element {
                     <p>
                         {`Please have some f: ${fAmount}`}
                     </p>                    
+                    <p>
+                        {`Please have some s: ${sAmount}`}
+                    </p>
                 </div>
             )
             : (
