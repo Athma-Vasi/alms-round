@@ -8,7 +8,7 @@ type State = {
     visited: boolean;
 };
 
-function returnHasAndAmounts(limit: number, isS:boolean=false): number {
+function returnHasAndAmounts(limit: number, isS: boolean = false): number {
     const rand1 = Math.random();
     const rand2 = Math.random();
     const rand3 = Math.random();
@@ -20,9 +20,11 @@ function returnHasAndAmounts(limit: number, isS:boolean=false): number {
         return hasItem ? 1 : 0;
     }
 
+    const anotherChance = Math.random() < 0.5 ? 0 : 1;
+
     return hasItem
         ? dayAmount === 0 ? 1 : dayAmount > limit ? limit : dayAmount
-        : 1;
+        : anotherChance;
 }
 
 function setHousesInfoCB(limit: number): Map<number, State> {
@@ -34,7 +36,7 @@ function setHousesInfoCB(limit: number): Map<number, State> {
             const cAmount = returnHasAndAmounts(limit);
             const pAmount = returnHasAndAmounts(limit);
             const fAmount = returnHasAndAmounts(limit);
-            const sAmount = returnHasAndAmounts(limit,true);
+            const sAmount = returnHasAndAmounts(limit, true);
 
             acc.set(index, {
                 cAmount,
@@ -91,7 +93,7 @@ function Neighbourhood(): JSX.Element {
                     </p>
                     <p>
                         {`Please have some f: ${fAmount}`}
-                    </p>                    
+                    </p>
                     <p>
                         {`Please have some s: ${sAmount}`}
                     </p>
