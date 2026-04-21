@@ -3,7 +3,7 @@ import { type JSX, useEffect, useState } from "react";
 type FoodKind = "carbs" | "fats" | "proteins" | "sides" | "yoghurt";
 type HouseDonation =
     & {
-        [K in FoodKind as `${K}Amount`]: number;
+        [Kind in FoodKind as `${Kind}Amount`]: number;
     }
     & {
         visited: boolean;
@@ -11,7 +11,7 @@ type HouseDonation =
 
 type HouseNumber = number;
 
-const foodKind_primes_map: Record<FoodKind, number[]> = {
+const FOODKIND_PRIMES_TABLE: Record<FoodKind, number[]> = {
     "carbs": [23, 29, 31, 37, 43, 47, 53, 59, 61, 67, 71, 73],
     "fats": [7, 11, 13, 17, 19, 23],
     "proteins": [11, 13, 17, 19, 23],
@@ -28,16 +28,10 @@ function hasDonation() {
 }
 
 function receiveDonation(foodKind: FoodKind): number {
-    const PRIMES = foodKind_primes_map[foodKind];
+    const PRIMES = FOODKIND_PRIMES_TABLE[foodKind];
     const amount = PRIMES[Math.floor(Math.random() * PRIMES.length)];
-    const anotherChance = Math.random() < 0.5 ? 0 : amount;
-    const anotherChance1 = Math.random() < 0.5 ? 0 : amount;
 
-    return hasDonation()
-        ? amount
-        : anotherChance === 0
-        ? anotherChance1
-        : anotherChance;
+    return hasDonation() ? amount : 0;
 }
 
 function setNeighbourhoodDonationsCB(
@@ -142,48 +136,3 @@ function Neighbourhood(): JSX.Element {
 }
 
 export default Neighbourhood;
-
-/**
- * function returnHasAndAmounts(): number {
-    const rand1 = Math.random();
-    const rand2 = Math.random();
-    const rand3 = Math.random();
-    const rand4 = Math.random();
-    const hasItem = rand1 < rand2 ? rand3 < rand4 : rand3 > rand4;
-    const PRIMES = [
-        2,
-        3,
-        5,
-        7,
-        11,
-        13,
-        17,
-        19,
-        23,
-        29,
-        31,
-        37,
-        43,
-        47,
-        53,
-        59,
-        61,
-        67,
-        71,
-        73,
-        79,
-        83,
-        89,
-        97,
-    ];
-    const amount = PRIMES[Math.floor(Math.random() * PRIMES.length)];
-    const anotherChance = Math.random() < 0.5 ? 0 : amount;
-    const anotherChance1 = Math.random() < 0.5 ? 0 : amount;
-
-    return hasItem
-        ? amount
-        : anotherChance === 0
-        ? anotherChance1
-        : anotherChance;
-}
- */
