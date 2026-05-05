@@ -1,6 +1,6 @@
 import { type JSX, useEffect, useState } from "react";
 
-type FoodKind = "carbs" | "fats" | "proteins" | "sides" | "yoghurt";
+type FoodKind = "rice" | "bread" | "fat" | "beans" | "yoghurt";
 type HouseDonation =
     & {
         [Kind in FoodKind as `${Kind}Amount`]: number;
@@ -14,14 +14,6 @@ type TotalAlms = {
     [Kind in FoodKind as `${Kind}Total`]: number;
 };
 
-const FOODKIND_PRIMES_TABLE: Record<FoodKind, number[]> = {
-    "carbs": [23, 29, 31, 37, 43, 47, 53, 59, 61, 67, 71, 73],
-    "fats": [7, 11, 13, 17, 19, 23],
-    "proteins": [11, 13, 17, 19, 23],
-    "sides": [13, 17, 19, 23, 29, 31, 37, 43, 47, 53],
-    "yoghurt": [37, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97],
-};
-
 function hasDonation() {
     const rand1 = Math.random();
     const rand2 = Math.random();
@@ -31,6 +23,14 @@ function hasDonation() {
 }
 
 function receiveDonation(foodKind: FoodKind): number {
+    const FOODKIND_PRIMES_TABLE: Record<FoodKind, number[]> = {
+        "beans": [17, 19, 23, 29, 31, 37, 43, 47],
+        "bread": [43, 47, 53, 59, 61, 67, 71, 73, 79, 83],
+        "fat": [11, 13, 17, 19, 23, 29, 31],
+        "rice": [23, 29, 31, 37, 43, 47, 53],
+        "yoghurt": [47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97],
+    };
+
     const PRIMES = FOODKIND_PRIMES_TABLE[foodKind];
     const amount = PRIMES[Math.floor(Math.random() * PRIMES.length)];
 
@@ -46,10 +46,10 @@ function setNeighbourhoodDonationsCB(
     return Array.from({ length })
         .reduce<Map<HouseNumber, HouseDonation>>((acc, _curr, index) => {
             const state: HouseDonation = {
-                carbsAmount: receiveDonation("carbs"),
-                fatsAmount: receiveDonation("fats"),
-                proteinsAmount: receiveDonation("proteins"),
-                sidesAmount: receiveDonation("sides"),
+                beansAmount: receiveDonation("beans"),
+                breadAmount: receiveDonation("bread"),
+                fatAmount: receiveDonation("fat"),
+                riceAmount: receiveDonation("rice"),
                 yoghurtAmount: receiveDonation("yoghurt"),
                 visited: false,
             };
@@ -91,10 +91,10 @@ function Neighbourhood(): JSX.Element {
         housesRevealed: number,
     ): TotalAlms {
         const initialAcc: TotalAlms = {
-            carbsTotal: 0,
-            fatsTotal: 0,
-            proteinsTotal: 0,
-            sidesTotal: 0,
+            beansTotal: 0,
+            breadTotal: 0,
+            fatTotal: 0,
+            riceTotal: 0,
             yoghurtTotal: 0,
         };
 
@@ -106,17 +106,17 @@ function Neighbourhood(): JSX.Element {
                     }
 
                     const {
-                        carbsAmount,
-                        fatsAmount,
-                        proteinsAmount,
-                        sidesAmount,
+                        beansAmount,
+                        breadAmount,
+                        fatAmount,
+                        riceAmount,
                         yoghurtAmount,
                     } = houseDonation;
 
-                    acc.carbsTotal += carbsAmount;
-                    acc.fatsTotal += fatsAmount;
-                    acc.proteinsTotal += proteinsAmount;
-                    acc.sidesTotal += sidesAmount;
+                    acc.beansTotal += beansAmount;
+                    acc.breadTotal += breadAmount;
+                    acc.fatTotal += fatAmount;
+                    acc.riceTotal += riceAmount;
                     acc.yoghurtTotal += yoghurtAmount;
 
                     return acc;
@@ -128,10 +128,10 @@ function Neighbourhood(): JSX.Element {
     const houses = Array.from(neighbourhoodDonations.values()).map(
         (houseDonation, index) => {
             const {
-                carbsAmount,
-                fatsAmount,
-                proteinsAmount,
-                sidesAmount,
+                beansAmount,
+                breadAmount,
+                fatAmount,
+                riceAmount,
                 yoghurtAmount,
                 visited,
             } = houseDonation;
@@ -141,16 +141,16 @@ function Neighbourhood(): JSX.Element {
                     <div key={String(index)} className="house visited">
                         <h3>House {index + 1}</h3>
                         <p>
-                            {`Please have some carbs: ${carbsAmount}`}
+                            {`Please have some beans: ${beansAmount}`}
                         </p>
                         <p>
-                            {`Please have some fat: ${fatsAmount}`}
+                            {`Please have some bread: ${breadAmount}`}
                         </p>
                         <p>
-                            {`Please have some protein: ${proteinsAmount}`}
+                            {`Please have some fat: ${fatAmount}`}
                         </p>
                         <p>
-                            {`Please have some sides: ${sidesAmount}`}
+                            {`Please have some rice: ${riceAmount}`}
                         </p>
                         <p>
                             {`Please have some yoghurt: ${yoghurtAmount}`}
@@ -171,20 +171,20 @@ function Neighbourhood(): JSX.Element {
     );
 
     const {
-        carbsTotal,
-        fatsTotal,
-        proteinsTotal,
-        sidesTotal,
+        beansTotal,
+        breadTotal,
+        fatTotal,
+        riceTotal,
         yoghurtTotal,
     } = sumDonations(neighbourhoodDonations, housesRevealed);
 
     const neighbourhoodAlmsElement = (
         <div className="totals">
             <h2>Neighbourhood Alms</h2>
-            <p>{`Carbs: ${carbsTotal}`}</p>
-            <p>{`Fats: ${fatsTotal}`}</p>
-            <p>{`Proteins: ${proteinsTotal}`}</p>
-            <p>{`Sides: ${sidesTotal}`}</p>
+            <p>{`Beans: ${beansTotal}`}</p>
+            <p>{`Bread: ${breadTotal}`}</p>
+            <p>{`Fat: ${fatTotal}`}</p>
+            <p>{`Rice: ${riceTotal}`}</p>
             <p>{`Yoghurt: ${yoghurtTotal}`}</p>
         </div>
     );
