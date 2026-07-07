@@ -1,6 +1,6 @@
 import { type JSX, useEffect, useState } from "react";
 
-type FoodKind = "beans" | "fibre" | "protein" | "rice" | "side";
+type FoodKind = "beans" | "fibre" | "protein" | "rice" | "seeds" | "side";
 type HouseDonation =
     & {
         [Kind in FoodKind as `${Kind}Amount`]: number;
@@ -28,6 +28,7 @@ function receiveDonation(foodKind: FoodKind): number {
         "fibre": [11, 13, 17, 19],
         "protein": [17, 19, 23, 29],
         "rice": [31, 37, 43, 47, 53, 59, 61, 67],
+        "seeds": [17, 19, 23, 29],
         "side": [17, 19, 23, 29, 31, 37],
     };
 
@@ -50,6 +51,7 @@ function setNeighbourhoodDonationsCB(
                 fibreAmount: receiveDonation("fibre"),
                 proteinAmount: receiveDonation("protein"),
                 riceAmount: receiveDonation("rice"),
+                seedsAmount: receiveDonation("seeds"),
                 sideAmount: receiveDonation("side"),
                 visited: false,
             };
@@ -95,6 +97,7 @@ function Neighbourhood(): JSX.Element {
             fibreTotal: 0,
             proteinTotal: 0,
             riceTotal: 0,
+            seedsTotal: 0,
             sideTotal: 0,
         };
 
@@ -110,6 +113,7 @@ function Neighbourhood(): JSX.Element {
                         fibreAmount,
                         proteinAmount,
                         riceAmount,
+                        seedsAmount,
                         sideAmount,
                     } = houseDonation;
 
@@ -117,6 +121,7 @@ function Neighbourhood(): JSX.Element {
                     acc.fibreTotal += fibreAmount;
                     acc.proteinTotal += proteinAmount;
                     acc.riceTotal += riceAmount;
+                    acc.seedsTotal += seedsAmount;
                     acc.sideTotal += sideAmount;
 
                     return acc;
@@ -132,6 +137,7 @@ function Neighbourhood(): JSX.Element {
                 fibreAmount,
                 proteinAmount,
                 riceAmount,
+                seedsAmount,
                 sideAmount,
                 visited,
             } = houseDonation;
@@ -151,6 +157,9 @@ function Neighbourhood(): JSX.Element {
                         </p>
                         <p>
                             {`Please have some rice: ${riceAmount}`}
+                        </p>
+                        <p>
+                            {`Please have some seeds: ${seedsAmount}`}
                         </p>
                         <p>
                             {`Please have some side: ${sideAmount}`}
@@ -175,6 +184,7 @@ function Neighbourhood(): JSX.Element {
         fibreTotal,
         proteinTotal,
         riceTotal,
+        seedsTotal,
         sideTotal,
     } = sumDonations(neighbourhoodDonations, housesRevealed);
 
@@ -185,6 +195,7 @@ function Neighbourhood(): JSX.Element {
             <p>{`Fibre: ${fibreTotal}`}</p>
             <p>{`Protein: ${proteinTotal}`}</p>
             <p>{`Rice: ${riceTotal}`}</p>
+            <p>{`Rice: ${seedsTotal}`}</p>
             <p>{`Side: ${sideTotal}`}</p>
         </div>
     );
