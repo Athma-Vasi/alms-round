@@ -1,6 +1,13 @@
 import { type JSX, useEffect, useState } from "react";
 
-type FoodKind = "beans" | "fibre" | "protein" | "rice" | "seeds" | "side";
+type FoodKind =
+    | "beans"
+    | "burrito"
+    | "crunchies"
+    | "protein"
+    | "rice"
+    | "seeds"
+    | "side";
 type HouseDonation =
     & {
         [Kind in FoodKind as `${Kind}Amount`]: number;
@@ -25,7 +32,8 @@ function hasDonation() {
 function receiveDonation(foodKind: FoodKind): number {
     const FOODKIND_PRIMES_TABLE: Record<FoodKind, number[]> = {
         "beans": [17, 19, 23, 29, 31, 37, 41, 43, 47],
-        "fibre": [11, 13, 17, 19],
+        "burrito": [1],
+        "crunchies": [11, 13, 17, 19],
         "protein": [17, 19, 23, 29],
         "rice": [41, 43, 47, 53, 59, 61, 67, 71, 73, 79],
         "seeds": [17, 19, 23, 29],
@@ -48,7 +56,8 @@ function setNeighbourhoodDonationsCB(
         .reduce<Map<HouseNumber, HouseDonation>>((acc, _curr, index) => {
             const state: HouseDonation = {
                 beansAmount: receiveDonation("beans"),
-                fibreAmount: receiveDonation("fibre"),
+                burritoAmount: receiveDonation("burrito"),
+                crunchiesAmount: receiveDonation("crunchies"),
                 proteinAmount: receiveDonation("protein"),
                 riceAmount: receiveDonation("rice"),
                 seedsAmount: receiveDonation("seeds"),
@@ -94,7 +103,8 @@ function Neighbourhood(): JSX.Element {
     ): TotalAlms {
         const initialAcc: TotalAlms = {
             beansTotal: 0,
-            fibreTotal: 0,
+            burritoTotal: 0,
+            crunchiesTotal: 0,
             proteinTotal: 0,
             riceTotal: 0,
             seedsTotal: 0,
@@ -110,7 +120,8 @@ function Neighbourhood(): JSX.Element {
 
                     const {
                         beansAmount,
-                        fibreAmount,
+                        burritoAmount,
+                        crunchiesAmount,
                         proteinAmount,
                         riceAmount,
                         seedsAmount,
@@ -118,7 +129,8 @@ function Neighbourhood(): JSX.Element {
                     } = houseDonation;
 
                     acc.beansTotal += beansAmount;
-                    acc.fibreTotal += fibreAmount;
+                    acc.burritoTotal += burritoAmount;
+                    acc.crunchiesTotal += crunchiesAmount;
                     acc.proteinTotal += proteinAmount;
                     acc.riceTotal += riceAmount;
                     acc.seedsTotal += seedsAmount;
@@ -134,7 +146,8 @@ function Neighbourhood(): JSX.Element {
         (houseDonation, index) => {
             const {
                 beansAmount,
-                fibreAmount,
+                burritoAmount,
+                crunchiesAmount,
                 proteinAmount,
                 riceAmount,
                 seedsAmount,
@@ -145,12 +158,15 @@ function Neighbourhood(): JSX.Element {
             return visited
                 ? (
                     <div key={String(index)} className="house visited">
-                        <h3>House {index + 1}</h3>
+                        <h3>🤗 🙏 House {index + 1} 💐🌷🌹🌸🌺</h3>
                         <p>
                             {`Please have some beans: ${beansAmount}`}
                         </p>
                         <p>
-                            {`Please have some fibre: ${fibreAmount}`}
+                            {`Please have some burritoes: ${burritoAmount}`}
+                        </p>
+                        <p>
+                            {`Please have some crunchies: ${crunchiesAmount}`}
                         </p>
                         <p>
                             {`Please have some protein: ${proteinAmount}`}
@@ -181,7 +197,8 @@ function Neighbourhood(): JSX.Element {
 
     const {
         beansTotal,
-        fibreTotal,
+        burritoTotal,
+        crunchiesTotal,
         proteinTotal,
         riceTotal,
         seedsTotal,
@@ -192,10 +209,11 @@ function Neighbourhood(): JSX.Element {
         <div className="totals">
             <h2>Neighbourhood Alms</h2>
             <p>{`Beans: ${beansTotal}`}</p>
-            <p>{`Fibre: ${fibreTotal}`}</p>
+            <p>{`Burritoes: ${burritoTotal}`}</p>
+            <p>{`Crunchies: ${crunchiesTotal}`}</p>
             <p>{`Protein: ${proteinTotal}`}</p>
             <p>{`Rice: ${riceTotal}`}</p>
-            <p>{`Rice: ${seedsTotal}`}</p>
+            <p>{`Seeds: ${seedsTotal}`}</p>
             <p>{`Side: ${sideTotal}`}</p>
         </div>
     );
