@@ -31,9 +31,9 @@ function hasDonation() {
 
 function receiveDonation(foodKind: FoodKind): number {
     const FOODKIND_PRIMES_TABLE: Record<FoodKind, number[]> = {
-        "beans": [17, 19, 23, 29, 31, 37, 41, 43, 47],
+        "beans": [11, 13, 17, 19],
         "burrito": [1],
-        "crunchies": [11, 13, 17, 19],
+        "crunchies": [17, 19, 23, 29, 31, 37, 41, 43, 47],
         "protein": [17, 19, 23, 29],
         "rice": [41, 43, 47, 53, 59, 61, 67, 71, 73, 79],
         "seeds": [17, 19, 23, 29],
