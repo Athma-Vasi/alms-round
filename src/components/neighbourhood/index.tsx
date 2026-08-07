@@ -158,7 +158,7 @@ function Neighbourhood(): JSX.Element {
             return visited
                 ? (
                     <div key={String(index)} className="house visited">
-                        <h3>🤗 🙏 House {index + 1} 💐🌷🌹🌸🌺</h3>
+                        <h3>🤗💐🌷🌹 House {index + 1} 🙏🌸🌺</h3>
                         <p>
                             {`Please have some beans: ${beansAmount}`}
                         </p>
