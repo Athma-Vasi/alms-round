@@ -70,7 +70,7 @@ function setNeighbourhoodDonationsCB(
 }
 
 function Neighbourhood(): JSX.Element {
-    const HOUSES_LIMIT = 4;
+    const HOUSES_LIMIT = 5;
     const [neighbourhoodDonations, setNeighbourhoodDonations] = useState(() =>
         setNeighbourhoodDonationsCB(HOUSES_LIMIT)
     );
